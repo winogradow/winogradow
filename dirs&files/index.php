@@ -14,7 +14,7 @@ function verifyDir($folder)
    if(is_dir($folder)) {
      return 1;
     } else {
-     if(fopen($folder, "r")) throw new Exception('Путь является файлом') ;
+     if(is_file($folder)) throw new Exception('Путь является файлом') ;
       else throw new Exception('Такого пути не существует'); 
      }
    } else throw new Exception('Путь задан неверно');
@@ -39,7 +39,7 @@ function showdir($folder)
 } 
  
 
-$dir='./';
+$dir=$argv[1];
 
 
 if(  verifyDir($dir)) {
