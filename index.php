@@ -1,38 +1,49 @@
-<?php
-
-function readMatrix($name)
-{
-    $count = 0;
-    $matrix = array();
-    $f=fopen ($name, "r");
-    if ($f) {
-        while(!feof($f)) {
-            $row = fgets ($f);
-            $row = explode (" ", $row);
-            $matrix[$count] = $row;
-            $count++;
-            }
-        return $matrix;	
-        } else {
-            echo "Ñ„Ð°Ð¹Ð»Ð° ".$name." Ð½Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚";
-            exit;}
+<style>
+.dir {
+color: black;
 }
-
-function multiplicate($a, $b)
-{
-	echo count($a);
-	echo count($b[0]);
-
+.file {
+color: green;
 }
+</style>
+<?php 
 
-$a = readMatrix("a.php");
-$b = readMatrix("b.php");
-if (count($a[0]) ==  count($b)) {
-  for($i=0;$i<count($a);$i++)
-    for($j=0;$j<count($b[0]);$j++)
-    {
-      $resMatrix[$i][$j]=0;
-      for ($k=0;$k<count($b);$k++) $resMatrix[$i][$j]+=$a[$i][$k]*$b[$k][$j];
-    }
-    print_r($resMatrix);
-} else echo "Ñ‡Ð¸ÑÐ»Ð¾ ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð² Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ A Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ñ€Ð°Ð²Ð½ÑÑ‚ÑŒÑÑ Ñ‡Ð¸ÑÐ»Ñƒ ÑÑ‚Ñ€Ð¾Ðº Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ B ";
+function verifyDir($folder)
+ {
+  if(is_string ( $folder )) {
+   if(is_dir($folder)) {
+     return 1;
+    } else {
+     if(is_file($folder)) throw new Exception('Ïóòü ÿâëÿåòñÿ ôàéëîì') ;
+      else throw new Exception('Òàêîãî ïóòè íå ñóùåñòâóåò'); 
+     }
+   } else throw new Exception('Ïóòü çàäàí íåâåðíî');
+  return 1;
+ }
+ 
+function showdir($folder) 
+ { 
+ $files = scandir($folder); 
+ echo '<ul>';
+ foreach($files as $file) { 
+  if ($file[0]=='.') continue; 
+  $fPath=$folder.'/'.$file;
+  if (is_dir($fPath)) { 
+   echo '<li class="dir">'.$file.'</li>'."\n"; 
+   showdir($fPath); 
+  } else {
+   echo '<li class="file">'.$file.'</li>'."\n"; 
+   }
+ } 
+ echo '</ul>';
+} 
+ 
+
+$dir=$argv[1];
+
+
+if(  verifyDir($dir)) {
+    showdir($dir); 
+ }
+
+ 
